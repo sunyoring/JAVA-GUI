@@ -1,54 +1,185 @@
 package com.sunyo.rockpaperscissors;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-public class 가위바위보 extends JFrame{
+public class 가위바위보 extends JFrame {
 
-	private Image backgroundImage = new ImageIcon("src/images/RPSMain.png").getImage();
-	private Image rock = new ImageIcon("src/images/rock.png").getImage();
-	private Image paper = new ImageIcon("src/images/paper.png").getImage();
-	private Image scissor = new ImageIcon("src/images/scissors.png").getImage();
-	
-	private int rockX,rockY,paperX,paperY,scissorX,scissorY;
-	
+	private Image bufferImage; // 버퍼이미지 객체
+	private Graphics screenGraphic; // 화면이미지를 얻어올 그래픽객체
+
+	private Image backgroundImage;
+
+	private ImageIcon rock = new ImageIcon("src/images/rock.png");
+	private ImageIcon paper = new ImageIcon("src/images/paper.png");
+	private ImageIcon scissor = new ImageIcon("src/images/scissors.png");
+	private Image player2 = new ImageIcon("src/images/scissors.png").getImage();
+	private JScrollPane scrollPane;
+	private ImageIcon icon;
+
+	private JButton rockButton = new JButton(rock);
+	private JButton paperButton = new JButton(paper);
+	private JButton scissorButton = new JButton(scissor);
+
+	BufferedImage img = null;
+	private String result;
+
+	private int rockX, rockY, paperX, paperY, scissorX, scissorY, player2X, Plaer2Y;
+
+
 	public 가위바위보() {
 		
+	
 		setTitle("가위바위보 게임");
+		
+		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setSize(1000,1000);
+		layeredPane.setLayout(null);
+		
+		try {
+			img = ImageIO.read(new File("src/images/RPSMain.png"));
+		}catch(IOException e) {
+			JOptionPane.showMessageDialog(null, "이미지 불러오기 실패");
+			System.exit(0);
+		}
+		MyPanel panel = new MyPanel();
+		panel.setSize(1000,1000);
+		
+		setLayout(null);
+		
+		setBounds(0,0,1000,1000);
 		setVisible(true);
-		setSize(1000,1000);
-		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-	
-	public void inIt() {
-		
-	}
-	
-	public void choiceAttack() {
-		
-	} 
-	public void paint(Graphics g) { // 더블 버퍼링 기법
-		g.drawImage(backgroundImage, 0, 0, null);
-		g.drawImage(rock, 135, 710, null);
-		g.drawImage(paper, 375, 710, null);
-		g.drawImage(scissor, 610, 710, null);
+//		setBackground(new Color(0,0,0,0));
 
-//		g.setColor(Color.BLACK);
-//		g.setFont(new Font("Arial", Font.BOLD, 40));
-//		g.drawString(result, 500,485);
+		rockButton.setBounds(105, 680, 250, 250);
+		rockButton.setBorderPainted(false);
+		rockButton.setContentAreaFilled(false);
+		rockButton.setFocusPainted(false);
+		rockButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				rockButton.setIcon(exitButtonBasicImage); // 마우스가 내려왔을 때 다시 이미지를 바꿔준다.
+				rockButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스 커서모양 변경
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+//				rockButton.setIcon(exitButtonBasicImage); // 마우스가 내려왔을 때 다시 이미지를 바꿔준다.
+				rockButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				paperButton.setVisible(false);
+				scissorButton.setVisible(false);
+			}
+		});
+		layeredPane.add(rockButton);
+		
+		paperButton.setBounds(350, 680, 250, 250);
+		paperButton.setBorderPainted(false);
+		paperButton.setContentAreaFilled(false);
+		paperButton.setFocusPainted(false);
+		paperButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				paperButton.setIcon(); // 마우스가 내려왔을 때 다시 이미지를 바꿔준다.
+				paperButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스 커서모양 변경
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+//				paperButton.setIcon(); // 마우스가 내려왔을 때 다시 이미지를 바꿔준다.
+				paperButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				rockButton.setVisible(false);
+				scissorButton.setVisible(false);
+			}
+		});
+		layeredPane.add(paperButton);
+		
+		scissorButton.setBounds(600, 680, 250, 250);
+		scissorButton.setBorderPainted(false);
+		scissorButton.setContentAreaFilled(false);
+		scissorButton.setFocusPainted(false);
+		scissorButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				scissorButton.setIcon(); // 마우스가 내려왔을 때 다시 이미지를 바꿔준다.
+				scissorButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // 마우스 커서모양 변경
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+//				scissorButton.setIcon(); // 마우스가 내려왔을 때 다시 이미지를 바꿔준다.
+				scissorButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				paperButton.setVisible(false);
+				rockButton.setVisible(false);
+			}
+		});
+		layeredPane.add(scissorButton);
+
+			
+		add(layeredPane);
+		layeredPane.add(panel);
+
+		
+	}
+	
+	class MyPanel extends JPanel {
+
+		public void paint(Graphics g) {
+			g.drawImage(img,0,0,null);
+		}
+	}
+
+	public void player2Attack() {
+		int Atk = (int) (Math.random() * 3) + 1;
+		if (Atk == 1) {
+			Image player2 = new ImageIcon("src/images/rock.png").getImage();
+		}
+		if (Atk == 2) {
+			Image player2 = new ImageIcon("src/images/paper.png").getImage();
+		}
+		if (Atk == 3) {
+			Image player2 = new ImageIcon("src/images/scissors.png").getImage();
+		}
+	}
+
+	public void player1Attack() {
+
 	}
 
 	public static void main(String[] args) {
 		new 가위바위보();
 	}
-	
-
 
 }
