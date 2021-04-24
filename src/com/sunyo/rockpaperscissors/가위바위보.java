@@ -40,17 +40,24 @@ public class 가위바위보 extends JFrame {
 	BufferedImage img = null;
 	private String result;
 
-	private int rockX, rockY, paperX, paperY, scissorX, scissorY, player2X, Plaer2Y;
-
+	private int player2X = 350;
+	private int player2Y = 100;
+	private int buttonY = 680;
+	private int scissorX = 600;
+	private int paperX = 350;
+	private int rockX = 105;
+	
 
 	public 가위바위보() {
 		
 	
 		setTitle("가위바위보 게임");
-		
+	
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setSize(1000,1000);
 		layeredPane.setLayout(null);
+
+
 		
 		try {
 			img = ImageIO.read(new File("src/images/RPSMain.png"));
@@ -69,7 +76,7 @@ public class 가위바위보 extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		setBackground(new Color(0,0,0,0));
 
-		rockButton.setBounds(105, 680, 250, 250);
+		rockButton.setBounds(rockX, buttonY, 250, 250);
 		rockButton.setBorderPainted(false);
 		rockButton.setContentAreaFilled(false);
 		rockButton.setFocusPainted(false);
@@ -91,11 +98,14 @@ public class 가위바위보 extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				paperButton.setVisible(false);
 				scissorButton.setVisible(false);
+				while(rockX < 350) {
+					rockX =+10;
+				}
 			}
 		});
 		layeredPane.add(rockButton);
 		
-		paperButton.setBounds(350, 680, 250, 250);
+		paperButton.setBounds(paperX, buttonY, 250, 250);
 		paperButton.setBorderPainted(false);
 		paperButton.setContentAreaFilled(false);
 		paperButton.setFocusPainted(false);
@@ -121,7 +131,7 @@ public class 가위바위보 extends JFrame {
 		});
 		layeredPane.add(paperButton);
 		
-		scissorButton.setBounds(600, 680, 250, 250);
+		scissorButton.setBounds(scissorX, buttonY, 250, 250);
 		scissorButton.setBorderPainted(false);
 		scissorButton.setContentAreaFilled(false);
 		scissorButton.setFocusPainted(false);
@@ -143,6 +153,7 @@ public class 가위바위보 extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				paperButton.setVisible(false);
 				rockButton.setVisible(false);
+
 			}
 		});
 		layeredPane.add(scissorButton);
@@ -158,6 +169,8 @@ public class 가위바위보 extends JFrame {
 
 		public void paint(Graphics g) {
 			g.drawImage(img,0,0,null);
+			g.drawImage(player2, player2X, player2Y, null);
+
 		}
 	}
 
@@ -174,9 +187,6 @@ public class 가위바위보 extends JFrame {
 		}
 	}
 
-	public void player1Attack() {
-
-	}
 
 	public static void main(String[] args) {
 		new 가위바위보();
