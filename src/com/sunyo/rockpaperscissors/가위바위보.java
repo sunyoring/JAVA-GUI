@@ -253,12 +253,18 @@ public class 가위바위보 extends JFrame {
 	public void screenDraw(Graphics2D g) {
 		g.drawImage(background, 0, 0, null); // background를 스크린 이미지에 그려준다.
 		// 단순 이미지 출력.
+		
+		g.setFont(new Font("Arial", Font.ITALIC, 35));
+		g.setColor(Color.BLACK);
+		g.drawString("ROCK SCISSOR PAPER", 20, 40);
 
 		if (choice == true) {
 			g.drawImage(player2, player2X, player2Y, null);
 			g.setFont(new Font("Arial", Font.BOLD, 100));
 			g.setColor(Color.DARK_GRAY);
 			g.drawString(result, paperX, 500);
+			
+			
 
 		}
 
