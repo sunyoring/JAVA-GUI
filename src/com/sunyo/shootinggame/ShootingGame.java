@@ -57,11 +57,12 @@ public class ShootingGame extends JFrame {
 			public void run() {
 				isLoadingScreen = false;
 				isGameScreen = true;
+				game.start();
+
 			}
 		};
 		loadingTimer.schedule(loadingTesk, 3000); // 로딩화면서에 3초후에 게임화면으로 넘어감.
 
-		game.start();
 	}
 
 	public void paint(Graphics g) {

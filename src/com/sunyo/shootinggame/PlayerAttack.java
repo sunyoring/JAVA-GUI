@@ -1,4 +1,4 @@
-package com.sunyo.shootinggame;
+ package com.sunyo.shootinggame;
 
 import java.awt.Image;
 
